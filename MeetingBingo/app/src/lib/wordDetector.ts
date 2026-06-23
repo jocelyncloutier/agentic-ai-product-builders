@@ -28,6 +28,11 @@ function normalizeText(text: string): string {
     .toLowerCase()
     .replace(/[‘’]/g, "'")
     .replace(/[“”]/g, '"')
+    // Hyphens/dashes → space. Speech transcripts render hyphenated words with
+    // spaces ("low-hanging fruit" → "low hanging fruit", "win-win" → "win win"),
+    // so normalize BOTH the card word and the transcript to match.
+    .replace(/[-–—]/g, ' ')
+    .replace(/\s+/g, ' ')
     .trim();
 }
 
@@ -68,7 +73,8 @@ function compileWord(word: string): CompiledWord {
     phrase: norm,
     // No 'g' flag → .test() is stateless and reusable across chunks.
     regex: isPhrase ? null : new RegExp(`\\b${escapeRegex(norm)}\\b`, 'i'),
-    aliases: WORD_ALIASES[norm] ?? [],
+    // Normalize alias strings the same way so e.g. "dev-ops" → "dev ops" too.
+    aliases: (WORD_ALIASES[norm] ?? []).map((a) => normalizeText(a)),
   };
 }
 
