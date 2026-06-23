@@ -2,14 +2,31 @@
 import { Button } from './ui/Button';
 
 interface Props {
+  micSupported: boolean;
+  isListening: boolean;
+  onToggleListening: () => void;
   onNewCard: () => void;
   onQuit: () => void;
-  // The listening (mic) toggle is added in Phase 3 (NEU-15/NEU-16).
 }
 
-export function GameControls({ onNewCard, onQuit }: Props) {
+export function GameControls({
+  micSupported,
+  isListening,
+  onToggleListening,
+  onNewCard,
+  onQuit,
+}: Props) {
   return (
-    <div className="flex items-center justify-center gap-2">
+    <div className="flex flex-wrap items-center justify-center gap-2">
+      {micSupported && (
+        <Button
+          variant={isListening ? 'secondary' : 'primary'}
+          onClick={onToggleListening}
+          aria-pressed={isListening}
+        >
+          {isListening ? '⏸ Stop listening' : '🎤 Start listening'}
+        </Button>
+      )}
       <Button variant="secondary" onClick={onNewCard}>
         🔄 New card
       </Button>
