@@ -6,6 +6,7 @@ import { GameControls } from './GameControls';
 import { TranscriptPanel } from './TranscriptPanel';
 import { checkForBingo, countFilled, getClosestToWin } from '../lib/bingoChecker';
 import { createCardDetector } from '../lib/wordDetector';
+import { track } from '../lib/analytics';
 import { useSpeechRecognition } from '../hooks/useSpeechRecognition';
 
 interface Props {
@@ -126,6 +127,7 @@ export function GameBoard({ game, setGame, onWin, onNewCard, onQuit }: Props) {
       );
       if (matchedIds.size === 0) return;
 
+      track('auto_fill', { count: matchedIds.size });
       applyFill(current, matchedIds, true);
     },
     [applyFill],
