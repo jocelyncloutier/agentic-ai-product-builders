@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Meeting Bingo brand palette.
+ * These hexes align with the Architecture doc's Tailwind color usage
+ * (blue = filled, amber = free space, green = winning line). Refine
+ * against the PRD §6 color spec when those exact values are confirmed.
+ */
+:root {
+  --color-brand: #3b82f6;   /* filled squares (blue-500) */
+  --color-free: #f59e0b;    /* free space (amber-500) */
+  --color-win: #22c55e;     /* winning line (green-500) */
+  --color-surface: #f9fafb; /* app background (gray-50) */
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100vh;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900 antialiased;
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Respect users who prefer reduced motion (plan H10) — keyframe
+   animations degrade to an instant state change. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
